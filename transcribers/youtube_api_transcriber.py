@@ -115,7 +115,7 @@ class YouTubeAPITranscriber(BaseTranscriber):
             })
 
         return transcript
-    
+
     def _time_to_seconds(self, time_str: str) -> float:
         """Convert time string in "HH:MM:SS,mmm" format to seconds.
 
