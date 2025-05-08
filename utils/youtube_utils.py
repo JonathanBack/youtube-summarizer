@@ -1,3 +1,9 @@
+"""Utility functions for handling YouTube URLs and video IDs.
+
+This module provides functionality to extract video IDs from various YouTube URL formats,
+including standard watch URLs, shortened URLs, and embed URLs.
+"""
+
 from urllib.parse import parse_qs, urlparse
 
 
