@@ -9,6 +9,9 @@ import whisper
 import youtube_dl
 
 from transcribers.base_transcriber import BaseTranscriber
+from utils.file_utils import file_exists, load_json, save_json
+from utils.transcript_utils import format_transcript
+from utils.youtube_utils import extract_video_id
 
 logger = logging.getLogger(__name__)
 
@@ -52,26 +55,7 @@ class WhisperTranscriber(BaseTranscriber):
 
         """
         # Create a unique filename based on video ID
-        from urllib.parse import parse_qs, urlparse
-
-        def extract_video_id(url: str) -> str:
-            """Extract the video ID from a YouTube URL."""
-            parsed_url = urlparse(url)
-
-            if parsed_url.hostname in ("youtu.be", "www.youtu.be"):
-                return parsed_url.path[1:]
-
-            if parsed_url.hostname in ("youtube.com", "www.youtube.com"):
-                if parsed_url.path == "/watch":
-                    return parse_qs(parsed_url.query)["v"][0]
-                if parsed_url.path.startswith("/embed/") or parsed_url.path.startswith("/v/"):  # noqa: E501
-                    return parsed_url.path.split("/")[2]
-
-            # If nothing matched
-            msg = f"Could not extract video ID from URL: {url}"
-            raise ValueError(msg)
-
-        video_id = extract_video_id(video_url)
+        video_id = extract_video_id(video_url)  # Use utility function
         output_path = os.path.join(config.OUTPUT_DIR, video_id)
         audio_path = f"{output_path}.mp3"
 
@@ -117,10 +101,9 @@ class WhisperTranscriber(BaseTranscriber):
         transcript_path = f"{os.path.splitext(audio_file)[0]}_transcript.json"
 
         # Skip transcription if transcript file already exists
-        if os.path.exists(transcript_path):
+        if file_exists(transcript_path):  # Use utility function
             logger.info(f"Loading existing transcript: {transcript_path}")
-            with open(transcript_path, "r", encoding="utf-8") as f:
-                return json.load(f)
+            return load_json(transcript_path)
 
         # Load the Whisper model
         logger.info(f"Loading Whisper model: {config.WHISPER_MODEL}")
@@ -135,15 +118,10 @@ class WhisperTranscriber(BaseTranscriber):
         )
 
         # Format transcript
-        transcript = [{
-            "start_time": segment["start"],
-            "end_time": segment["end"],
-            "text": segment["text"].strip(),
-        } for segment in result["segments"]]
+        transcript = format_transcript(result["segments"])  # Use utility function
 
         # Save transcript to file
-        with open(transcript_path, "w", encoding="utf-8") as f:
-            json.dump(transcript, f, indent=2, ensure_ascii=False)
+        save_json(transcript, transcript_path)  # Use utility function
 
         logger.info(f"Transcript saved to: {transcript_path}")
         return transcript

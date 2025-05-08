@@ -2,12 +2,14 @@
 
 import logging
 import re
-from urllib.parse import parse_qs, urlparse
 
 import config
 import googleapiclient.discovery
 
 from transcribers.base_transcriber import BaseTranscriber
+from utils.time_helpers import time_to_seconds
+from utils.transcript_utils import format_transcript
+from utils.youtube_utils import extract_video_id
 
 logger = logging.getLogger(__name__)
 
@@ -27,7 +29,7 @@ class YouTubeAPITranscriber(BaseTranscriber):
             list: List of transcript segments with timestamps
 
         """
-        video_id = self.extract_video_id(video_url)
+        video_id = extract_video_id(video_url)  # Use utility function
 
         # Build the YouTube service
         youtube = googleapiclient.discovery.build(
@@ -64,30 +66,6 @@ class YouTubeAPITranscriber(BaseTranscriber):
         # Parse the SRT format and convert to transcript dict
         return self.parse_srt(subtitle.decode("utf-8"))
 
-    def _extract_video_id(self, video_url: str) -> str:
-        """Extract the video ID from a YouTube URL.
-
-        Args:
-            video_url (str): URL of the video
-
-        Returns:
-            str: Video ID
-
-        """
-        parsed_url = urlparse(video_url)
-
-        if parsed_url.hostname in ("youtu.be", "www.youtu.be"):
-            return parsed_url.path[1:]
-
-        if parsed_url.hostname in ("youtube.com", "www.youtube.com"):
-            if parsed_url.path == "/watch":
-                return parse_qs(parsed_url.query)["v"][0]
-            if parsed_url.path.startswith("/embed/") or parsed_url.path.startswith("/v/"):
-                return parsed_url.path.split("/")[2]
-
-        # If nothing matched
-        msg = f"Could not extract video ID from URL: {video_url}"
-        raise ValueError(msg)
 
     def _parse_srt(self, srt_string: str) -> list:
         """Parse SRT formatted subtitle string into a structure transcript.
