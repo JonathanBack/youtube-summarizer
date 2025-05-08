@@ -16,7 +16,7 @@ logger = logging.getLogger(__name__)
 class YouTubeAPITranscriber(BaseTranscriber):
     """Obtains transcripts using the YouTube Data API."""
 
-    def _innit__(self) -> None:
+    def __innit__(self) -> None:
         """Initialize the YouTube API transcriber."""
         pass
 
@@ -83,26 +83,13 @@ class YouTubeAPITranscriber(BaseTranscriber):
         matches = pattern.findall(srt_string)
         for _, start_time, end_time, text in matches:
             # Convert time format from "00:00:00,000" to seconds
-            start_seconds = self._time_to_seconds(start_time)
-            end_seconds = self._time_to_seconds(end_time)
+            start_seconds = time_to_seconds(start_time)  # Use utility function
+            end_seconds = time_to_seconds(end_time)  # Use utility function
 
             transcript.append({
                 "start_time": start_seconds,
                 "end_time": end_seconds,
-                "text": text.strip().replace("\n", " ")
+                "text": text.strip().replace("\n", " "),
             })
 
-        return transcript
-
-    def _time_to_seconds(self, time_str: str) -> float:
-        """Convert time string in "HH:MM:SS,mmm" format to seconds.
-
-        Args:
-            time_str (str): Time string
-
-        Returns:
-            float: Time in seconds
-
-        """
-        hours, minutes, seconds = time_str.replace(",", ".").split(":")
-        return float(hours) * 3600 + float(minutes) * 60 + float(seconds)
+        return format_transcript(transcript)  # Use utility function

@@ -18,7 +18,7 @@ logger = logging.getLogger(__name__)
 class WhisperTranscriber(BaseTranscriber):
     """Downloads videos and transcribes them using OpenAI's Whisper model."""
 
-    def __innit_(self) -> None:
+    def __innit__(self) -> None:
         """Initialize the Whisper transcriber."""
         pass
 
@@ -60,7 +60,7 @@ class WhisperTranscriber(BaseTranscriber):
         audio_path = f"{output_path}.mp3"
 
         # Skip download if audio file already exists
-        if os.path.exists(audio_path):
+        if file_exists(audio_path):  # Use utility function
             logger.info(f"Audio file already exists: {audio_path}")
             return audio_path
 
