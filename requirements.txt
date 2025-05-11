@@ -1,0 +1,5 @@
+google-api-python-client
+openai-whisper
+youtube-dl
+google-generativeai
+python-dotenv
