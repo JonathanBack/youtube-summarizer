@@ -3,9 +3,9 @@
 import logging
 import re
 
-import config
 import googleapiclient.discovery
 
+import config
 from transcribers.base_transcriber import BaseTranscriber
 from utils.time_helpers import time_to_seconds
 from utils.transcript_utils import format_transcript
