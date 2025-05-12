@@ -3,7 +3,6 @@ import argparse
 import logging
 import sys
 
-import config
 from utils.summarizer import generate_summary
 from utils.timestamp_generator import generate_timestamps
 from utils.whisper_transcriber import transcribe_audio
@@ -43,16 +42,16 @@ def main():
     force_download = args.force_download
 
     logger.info("Processing video: %s", video_url)
-    # Try to get transcript via YouTube API first (unless forced to download)
+    # Try to get transcript via youtube-transcript-api first (unless forced to download)
     transcript = None
     if method == "api" and not force_download:
         try:
-            logger.info("Attempting to fetch transcript via YouTube API...")
+            logger.info("Attempting to fetch transcript via youtube-transcript-api...")
             transcript = get_video_transcript(video_url)
             if transcript:
-                logger.info("Successfully retrieved transcript from YouTube API")
+                logger.info("Successfully retrieved transcript from youtube-transcript-api")
         except (ValueError, KeyError, ConnectionError) as e:
-            logger.warning("Failed to get transcript via API: %s", e)
+            logger.warning("Failed to get transcript via youtube-transcript-api: %s", e)
             if method == "api":
                 logger.info("Falling back to download method")
 
