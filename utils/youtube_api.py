@@ -58,10 +58,3 @@ def get_video_transcript(video_url: str) -> list:
         raise ValueError(msg) from e
     else:
         return transcript
-
-
-
-def time_to_seconds(time_str):
-    """Convert time string (HH:MM:SS,mmm) to seconds."""
-    hours, minutes, seconds = time_str.replace(',', '.').split(':')
-    return float(hours) * 3600 + float(minutes) * 60 + float(seconds)
