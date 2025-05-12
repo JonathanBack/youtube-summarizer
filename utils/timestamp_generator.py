@@ -24,8 +24,8 @@ def generate_timestamps(transcript : list) -> list:
     # Combine transcript segments into a single text with timestamps
     full_text = ""
     for segment in transcript:
-        minutes = int(segment["start_time"] // 60)
-        seconds = int(segment["start_time"] % 60)
+        minutes = int(segment["start"] // 60)
+        seconds = int(segment["start"] % 60)
         timestamp = f"{minutes:02d}:{seconds:02d}"
         full_text += f"[{timestamp}] {segment['text']}\n"
 
