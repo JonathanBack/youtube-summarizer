@@ -1,6 +1,5 @@
 """Transcriber implementation that uses youtube-dl and OpenAI's Whisper."""
 
-import json
 import logging
 import os
 
@@ -18,29 +17,30 @@ logger = logging.getLogger(__name__)
 class WhisperTranscriber(BaseTranscriber):
     """Downloads videos and transcribes them using OpenAI's Whisper model."""
 
-    def __innit__(self) -> None:
+    def __init__(self) -> None:
         """Initialize the Whisper transcriber."""
-        pass
+        super().__init__()
 
-        def get_transcript(self, video_url: str) -> list:
-            """Download a video and transcriber it using Whisper".
+    def get_transcript(self, video_url: str) -> list:
+        """Download a video and transcriber it using Whisper".
 
-            Args:
-                video_url (str): URL of the video
+        Args:
+            self: Instance of the WhisperTranscriber class
+            video_url (str): URL of the video
 
-            Returns:
-                list: Transcript data with timestamps
+        Returns:
+            list: Transcript data with timestamps
 
-            """
-            # Download the video first
-            audio_file = self.download_video(video_url)
+        """
+        # Download the video first
+        audio_file = self._download_video(video_url)
 
-            if not audio_file:
-                msg = f"Failed to downnload video: {video_url}"
-                raise RuntimeError(msg)
+        if not audio_file:
+            msg = f"Failed to downnload video: {video_url}"
+            raise RuntimeError(msg)
 
-            # Transcribe the audio
-            return self._transcribe_audio(audio_file)
+        # Transcribe the audio
+        return self._transcribe_audio(audio_file)
 
 
 

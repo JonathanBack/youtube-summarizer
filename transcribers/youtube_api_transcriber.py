@@ -16,9 +16,9 @@ logger = logging.getLogger(__name__)
 class YouTubeAPITranscriber(BaseTranscriber):
     """Obtains transcripts using the YouTube Data API."""
 
-    def __innit__(self) -> None:
+    def __init__(self) -> None:
         """Initialize the YouTube API transcriber."""
-        pass
+        super().__init__()
 
     def get_transcript(self, video_url: str) -> list:
         """Get the transcript of a YouTube video using the YouTube Data API.

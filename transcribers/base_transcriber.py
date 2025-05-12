@@ -6,11 +6,11 @@ from abc import ABC, abstractmethod
 class BaseTranscriber(ABC):
     """Abstract base class for all transcribers.
 
-    Defines the common itnerface for getting transcripts.
+    Defines the common interface for getting transcripts.
     """
 
     @abstractmethod
-    def get_transcript(self, video_url):
+    def get_transcript(self, video_url: str) -> list:
         """Get transcript for a video.
 
         Args:
