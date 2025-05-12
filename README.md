@@ -4,7 +4,7 @@ A Python tool to automatically generate summaries of YouTube videos using AI.
 
 ## Features
 
-- Fetch video transcripts using the YouTube API
+- Fetch video transcripts using `youtube-transcript-api`
 - Download videos and transcribe them using OpenAI's Whisper when transcripts aren't available
 - Generate key timestamps for important points in the video
 - Create concise AI-powered summaries using Google's Gemini API
@@ -12,11 +12,12 @@ A Python tool to automatically generate summaries of YouTube videos using AI.
 ## Project Structure
 
 ```
-youtube-summarizer/
-├── processors/         # Core processing classes
-├── transcribers/       # Transcript acquisition classes
-├── utils/              # Helper utilities
-└── tests/              # Unit tests
+youtube-summarizer/ 
+├── utils/ # Helper utilities 
+├── main.py # Entry point for the application 
+├── config.py # Configuration settings 
+├── requirements.txt # Project dependencies 
+└── README.md # Documentation
 ```
 
 ## Installation
@@ -32,11 +33,23 @@ cd youtube-summarizer
 pip install -r requirements.txt
 ```
 
-3. Create a `.env` file with your API keys:
+3. Install ffmpeg (required for Whisper):
+
+On Linux:
+```bash
+sudo apt-get install ffmpeg
 ```
-YOUTUBE_API_KEY=your_youtube_api_key
+
+Or via Python:
+```bash
+pip install imageio[ffmpeg]
+```
+
+4. Create a `.env` file with your API keys:
+```
 GEMINI_API_KEY=your_gemini_api_key
 WHISPER_MODEL=base
+OUTPUT_DIR=output
 ```
 
 ## Usage
@@ -54,10 +67,12 @@ Options:
 ## Requirements
 
 - Python 3.8+
-- youtube-dl
-- google-api-python-client
+- pytube
+- youtube-transcript-api
 - openai-whisper
+- tqdm
 - google-generativeai
+- ffmpeg
 
 ## License
 
