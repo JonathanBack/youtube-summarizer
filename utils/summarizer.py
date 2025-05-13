@@ -44,7 +44,7 @@ def generate_summary(transcript: list, timestamps: list) -> str:
     {key_points_text}
 
     Here's the transcript to summarize:
-    {full_text[:15000]}  # Limit to first 15k characters
+    {full_text}
     """
 
     # Generate summary
